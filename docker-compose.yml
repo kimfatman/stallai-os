@@ -1,0 +1,77 @@
+# ============================================
+# 摆摊AI经营OS - Docker Compose 配置
+# AI Street Vendor Management OS
+# ============================================
+
+version: '3.8'
+
+services:
+  # PostgreSQL 数据库服务
+  postgres:
+    image: postgres:15-alpine
+    container_name: stallai-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-stallai}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-stallai123}
+      POSTGRES_DB: ${POSTGRES_DB:-stallai}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-stallai}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis 缓存服务
+  redis:
+    image: redis:7-alpine
+    container_name: stallai-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # 后端 API 服务
+  backend:
+    build:
+      context: ./stallai-backend
+      dockerfile: Dockerfile
+    container_name: stallai-backend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: ${DATABASE_URL:-postgresql://stallai:stallai123@postgres:5432/stallai}
+      REDIS_HOST: ${REDIS_HOST:-redis}
+      REDIS_PORT: ${REDIS_PORT:-6379}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRATION: ${JWT_EXPIRATION:-7d}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./stallai-backend:/app
+      - /app/node_modules
+
+volumes:
+  # PostgreSQL 数据持久化卷
+  postgres_data:
+  # Redis 数据持久化卷
+  redis_data:
+
+networks:
+  default:
+    name: stallai-network
