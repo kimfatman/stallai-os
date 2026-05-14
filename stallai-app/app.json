@@ -1,0 +1,78 @@
+{
+  "expo": {
+    "name": "摆摊AI经营OS",
+    "slug": "stallai-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "scheme": "stallai",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.stallai.app",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "摆摊AI需要获取您的位置信息，以便为您提供附近的摆摊地点推荐。",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "摆摊AI需要获取您的位置信息，以便为您提供附近的摆摊地点推荐和路线导航。",
+        "NSCameraUsageDescription": "摆摊AI需要使用相机来拍摄商品照片和扫描二维码。",
+        "NSPhotoLibraryUsageDescription": "摆摊AI需要访问您的相册，以便上传商品图片。",
+        "NSMicrophoneUsageDescription": "摆摊AI需要使用麦克风进行语音记账和语音搜索。"
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.stallai.app",
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.VIBRATE"
+      ],
+      "softwareKeyboardLayoutMode": "pan"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "摆摊AI需要获取您的位置信息，以便为您提供附近的摆摊地点推荐。"
+        }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": []
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "tsconfigPaths": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "your-project-id"
+      },
+      "router": {
+        "origin": false
+      }
+    }
+  }
+}
