@@ -1,0 +1,7 @@
+# pnpm workspace 配置 - 摆摊AI经营OS monorepo
+# pnpm workspace configuration - AI Street Vendor Management OS monorepo
+packages:
+  # 移动应用
+  - 'stallai-app'
+  # 后端 API 服务
+  - 'stallai-backend'
